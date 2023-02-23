@@ -84,6 +84,7 @@ msg = visual.TextBox2(
 final = visual.TextBox2(
         win,
         pos = (0,0),
+        font = 'Open Sans',
         color = 'black',
         text = '''
         Thank you for your participation!
