@@ -17,10 +17,35 @@ def play_and_trigger(stim, trigger):
     setParallelData(0)
     times = [time1, time2, time3]
     print(times)
+    
+ def fixation_cross():
+    
+    vertical = visual.Line(
+        win,
+        start = (-0.4,0), 
+        end = (0.4,0),
+        units = 'deg',
+        lineColor = "black",
+        pos = (0,0),
+        lineWidth = 5
+        )
+        
+    horizontal = visual.Line(
+        win,
+        start = (0,-0.4),
+        end = (0,0.4), 
+        units = 'deg',
+        lineColor = "black",
+        pos = (0,0),
+        lineWidth = 5
+        )
+        
+    vertical.draw()
+    horizontal.draw()
 
 win = visual.Window(
         size=[1920,1080],
-        color="black",
+        color="white",
         units="pix",
         screen=1,
         fullscr = True
@@ -76,6 +101,7 @@ elif Dialoguebox.Cancel:
 
 msg.draw()
 
+
 win.flip()
 
 while not event.getKeys(keyList=["q"]):
@@ -92,6 +118,7 @@ for file in fileList:
     win.callOnFlip(play_and_trigger, stim = sound.Sound(file, volume = 0.5), trigger = trigger) 
     #maybe we can just name them,starting from the trigger - 1_ for human and
     # 2_ for non-human or maybe 3_, 4_0 and so on for each different group of non-human sounds we decide to use
+    fixation_cross()
     win.flip()
     core.wait(5.0)
     results = results.append({
