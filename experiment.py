@@ -86,7 +86,6 @@ final = visual.TextBox2(
         pos = (0,0),
         font = 'Open Sans',
         color = 'black',
-        font = 'Open Sans',
         text = '''
         Thank you for your participation!
 
