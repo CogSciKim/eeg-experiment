@@ -2,7 +2,7 @@ from psychopy import sound, visual, core, event, data, gui
 import glob
 import random, os
 import pandas as pd
-from triggers import setParallelData
+#from triggers import setParallelData
 
 #dialogue box
 Dialoguebox = gui.Dlg(title = "Information")
@@ -47,11 +47,11 @@ def check_quit():
 
 def play_and_trigger(stim, trigger):
     time1 = timer.getTime() #just for checking how long it takes
-    setParallelData(trigger)
+    #setParallelData(trigger)
     time2 = timer.getTime()
     stim.play()
     time3 = timer.getTime()
-    setParallelData(0)
+    #setParallelData(0)
     times = [time1, time2, time3]
     #print(times)
     
@@ -85,6 +85,7 @@ final = visual.TextBox2(
         win,
         pos = (0,0),
         color = 'black',
+        font = 'Open Sans',
         text = '''
         Thank you for your participation!
 
@@ -110,7 +111,7 @@ fixation_cross()
 win.flip()
 
 for file in fileList:
-    trigger = file
+    trigger = file[7:8]
     trial = fileList.index(file)+1
     win.callOnFlip(play_and_trigger, stim = sound.Sound(file, volume = 0.5), trigger = trigger) 
     #maybe we can just name them,starting from the trigger - 1_ for human and
