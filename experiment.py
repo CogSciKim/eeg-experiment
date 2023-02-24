@@ -26,7 +26,7 @@ timestamp = data.getDateStr()
 if not os.path.exists("data"):
     os.makedirs("data")
 
-cols = ["id", "gender", "age", "trial", "trigger", "filename"]
+cols = ["id", "gender", "age", "trial", "trigger", "audio_name"]
 
 results = pd.DataFrame(
     columns = cols
@@ -113,7 +113,7 @@ win.flip()
 for file in fileList:
     trigger = int(file[7:8])
     trial = fileList.index(file)+1
-    filename = file
+    audio_name = file
     win.callOnFlip(play_and_trigger, stim = sound.Sound(file, volume = 0.5), trigger = trigger) 
     #maybe we can just name them,starting from the trigger - 1_ for human and
     # 2_ for non-human or maybe 3_, 4_0 and so on for each different group of non-human sounds we decide to use
@@ -126,7 +126,7 @@ for file in fileList:
         "age": age,
         "trial": trial,
         "trigger": trigger,
-        "filename": filename
+        "audio_name": audio_name,
         })
     trialDf = pd.DataFrame(row,index=cols).T
 
