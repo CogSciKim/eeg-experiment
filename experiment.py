@@ -112,7 +112,7 @@ fixation_cross()
 win.flip()
 
 for file in fileList:
-    trigger = file[7:8]
+    trigger = int(file[7:8])
     trial = fileList.index(file)+1
     win.callOnFlip(play_and_trigger, stim = sound.Sound(file, volume = 0.5), trigger = trigger) 
     #maybe we can just name them,starting from the trigger - 1_ for human and
