@@ -2,7 +2,7 @@ from psychopy import sound, visual, core, event, data, gui
 import glob
 import random, os
 import pandas as pd
-#from triggers import setParallelData
+from triggers import setParallelData
 
 #dialogue box
 Dialoguebox = gui.Dlg(title = "Information")
@@ -45,14 +45,15 @@ def check_quit():
     if event.getKeys(keyList=["escape"]):
             core.quit()
 
-def play_and_trigger(stim, trigger):
-    time1 = timer.getTime() #just for checking how long it takes
-    #setParallelData(trigger)
-    time2 = timer.getTime()
-    stim.play()
-    time3 = timer.getTime()
+#def play_and_trigger(stim, trigger):
+#    setParallelData(0)
+#    time1 = timer.getTime() #just for checking how long it takes
+#    setParallelData(trigger)
+#    time2 = timer.getTime()
+#    stim.play()
+#    time3 = timer.getTime()
     #setParallelData(0)
-    times = [time1, time2, time3]
+    #times = [time1, time2, time3]
     #print(times)
     
 def fixation_cross():
@@ -110,16 +111,38 @@ timer = core.Clock()
 fixation_cross()
 win.flip()
 
+PullTriggerDown = False 
+
 for file in fileList:
-    trigger = int(file[7:8])
+    condition = int(file[7:8])
+    if condition==1: 
+        trigger = 11
+    if condition==2: 
+        trigger = 21
     trial = fileList.index(file)+1
     audio_name = file
-    win.callOnFlip(play_and_trigger, stim = sound.Sound(file, volume = 0.5), trigger = trigger) 
+    win.callOnFlip(setParallelData, trigger) 
+    PullTriggerDown = True 
+    stim = sound.Sound(file, volume = 0.5)
+    time1 = timer.getTime()
+    print(time1)
+    win.flip()
+    stim.play()
+    time2 = timer.getTime()
+    print(time2) 
+    if PullTriggerDown:
+        win.callOnFlip(setParallelData, 0)
+        PullTriggerDown = False 
+    
+    #play_and_trigger(stim = sound.Sound(file, volume = 0.5), trigger = trigger)
+    #win.callOnFlip(play_and_trigger, stim = sound.Sound(file, volume = 0.5), trigger = trigger) 
     #maybe we can just name them,starting from the trigger - 1_ for human and
     # 2_ for non-human or maybe 3_, 4_0 and so on for each different group of non-human sounds we decide to use
-    fixation_cross()
-    win.flip()
-    core.wait(1.2) # short trials for actual data
+    #fixation_cross()
+    #win.flip()
+    #win.callOnFlip(setParallelData, 0)
+    #core.wait(1.2) # short trials for actual data
+    core.wait(4)
     row = pd.Series({
         "id": id, 
         "gender": gender,
@@ -134,6 +157,7 @@ for file in fileList:
         ignore_index = True,
         axis=0
     )
+    win.flip()
 
 
 results.to_csv(filename,index=False)
