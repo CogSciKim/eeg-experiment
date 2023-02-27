@@ -142,7 +142,10 @@ for file in fileList:
     #win.flip()
     #win.callOnFlip(setParallelData, 0)
     #core.wait(1.2) # short trials for actual data
-    core.wait(4)
+    core.wait(1.3)
+    stim.pause()
+    core.wait(0.5)
+
     row = pd.Series({
         "id": id, 
         "gender": gender,
