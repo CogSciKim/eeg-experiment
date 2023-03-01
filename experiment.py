@@ -2,7 +2,7 @@ from psychopy import sound, visual, core, event, data, gui
 import glob
 import random, os
 import pandas as pd
-from triggers import setParallelData
+#from triggers import setParallelData
 
 #dialogue box
 Dialoguebox = gui.Dlg(title = "Information")
@@ -44,17 +44,6 @@ win = visual.Window(
 def check_quit():
     if event.getKeys(keyList=["escape"]):
             core.quit()
-
-#def play_and_trigger(stim, trigger):
-#    setParallelData(0)
-#    time1 = timer.getTime() #just for checking how long it takes
-#    setParallelData(trigger)
-#    time2 = timer.getTime()
-#    stim.play()
-#    time3 = timer.getTime()
-    #setParallelData(0)
-    #times = [time1, time2, time3]
-    #print(times)
     
 def fixation_cross():
     
@@ -105,7 +94,8 @@ win.flip()
 
 while not event.getKeys(keyList=["q"]):
     pass
-    check_quit()
+    if event.getKeys(['escape']):
+        core.quit()
 
 timer = core.Clock()
 fixation_cross()
@@ -114,6 +104,9 @@ win.flip()
 PullTriggerDown = False 
 
 for file in fileList:
+    if event.getKeys(['escape']):
+        results.to_csv(filename,index=False)
+        core.quit()
     condition = int(file[7:8])
     if condition==1: 
         trigger = 11
@@ -121,28 +114,20 @@ for file in fileList:
         trigger = 21
     trial = fileList.index(file)+1
     audio_name = file
-    win.callOnFlip(setParallelData, trigger) 
+    #win.callOnFlip(setParallelData, trigger) 
     PullTriggerDown = True 
     stim = sound.Sound(file, volume = 0.5)
+    fixation_cross()
     time1 = timer.getTime()
-    print(time1)
     win.flip()
-    stim.play()
     time2 = timer.getTime()
-    print(time2) 
+    stim.play()
+    time3 = timer.getTime()
+    print([time1, time2, time3])
     if PullTriggerDown:
-        win.callOnFlip(setParallelData, 0)
+        #win.callOnFlip(setParallelData, 0)
         PullTriggerDown = False 
-    
-    #play_and_trigger(stim = sound.Sound(file, volume = 0.5), trigger = trigger)
-    #win.callOnFlip(play_and_trigger, stim = sound.Sound(file, volume = 0.5), trigger = trigger) 
-    #maybe we can just name them,starting from the trigger - 1_ for human and
-    # 2_ for non-human or maybe 3_, 4_0 and so on for each different group of non-human sounds we decide to use
-    #fixation_cross()
-    #win.flip()
-    #win.callOnFlip(setParallelData, 0)
-    #core.wait(1.2) # short trials for actual data
-    core.wait(1.3)
+    core.wait(2)
     stim.pause()
     core.wait(0.5)
 
@@ -160,6 +145,7 @@ for file in fileList:
         ignore_index = True,
         axis=0
     )
+    fixation_cross()
     win.flip()
 
 
@@ -169,6 +155,27 @@ results.to_csv(filename,index=False)
 final.draw()
 win.flip()
 
-while True:
-    if event.getKeys(keyList=["q"]):
-        break
+
+#code we added while thinking it was broke (idk, might be useful if it breaks again):
+    #play_and_trigger(stim = sound.Sound(file, volume = 0.5), trigger = trigger)
+    #win.callOnFlip(play_and_trigger, stim = sound.Sound(file, volume = 0.5), trigger = trigger) 
+    #maybe we can just name them,starting from the trigger - 1_ for human and
+    # 2_ for non-human or maybe 3_, 4_0 and so on for each different group of non-human sounds we decide to use
+    #fixation_cross()
+    #win.flip()
+    #win.callOnFlip(setParallelData, 0)
+    #core.wait(1.2) # short trials for actual data
+    
+    
+    
+    
+#def play_and_trigger(stim, trigger):
+#    setParallelData(0)
+#    time1 = timer.getTime() #just for checking how long it takes
+#    setParallelData(trigger)
+#    time2 = timer.getTime()
+#    stim.play()
+#    time3 = timer.getTime()
+    #setParallelData(0)
+    #times = [time1, time2, time3]
+    #print(times)
