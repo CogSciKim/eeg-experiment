@@ -2,7 +2,7 @@ from psychopy import sound, visual, core, event, data, gui
 import glob
 import random, os
 import pandas as pd
-#from triggers import setParallelData
+from triggers import setParallelData
 
 #dialogue box
 Dialoguebox = gui.Dlg(title = "Information")
@@ -117,7 +117,7 @@ for file in fileList:
     duration = stim.getDuration()
     waiting_time = random.uniform(0.9, 1.1)
     fixation_cross()
-    #win.callOnFlip(setParallelData, trigger)
+    win.callOnFlip(setParallelData, trigger)
     time1 = timer.getTime()
     win.flip()
     time2 = timer.getTime()
@@ -145,6 +145,7 @@ for file in fileList:
         axis=0
     )
     fixation_cross()
+    win.callOnFlip(setParallelData, 0)
     win.flip()
 
 
