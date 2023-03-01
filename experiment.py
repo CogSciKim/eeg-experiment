@@ -2,7 +2,7 @@ from psychopy import sound, visual, core, event, data, gui
 import glob
 import random, os
 import pandas as pd
-#from triggers import setParallelData
+from triggers import setParallelData
 
 #dialogue box
 Dialoguebox = gui.Dlg(title = "Information")
@@ -114,7 +114,7 @@ for file in fileList:
         trigger = 21
     trial = fileList.index(file)+1
     audio_name = file
-    #win.callOnFlip(setParallelData, trigger) 
+    win.callOnFlip(setParallelData, trigger) 
     PullTriggerDown = True 
     stim = sound.Sound(file, volume = 0.5)
     fixation_cross()
@@ -125,7 +125,7 @@ for file in fileList:
     time3 = timer.getTime()
     print([time1, time2, time3])
     if PullTriggerDown:
-        #win.callOnFlip(setParallelData, 0)
+        win.callOnFlip(setParallelData, 0)
         PullTriggerDown = False 
     core.wait(2)
     stim.pause()
