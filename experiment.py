@@ -2,7 +2,7 @@ from psychopy import sound, visual, core, event, data, gui
 import glob
 import random, os
 import pandas as pd
-from triggers import setParallelData
+#from triggers import setParallelData
 
 #dialogue box
 Dialoguebox = gui.Dlg(title = "Information")
@@ -26,7 +26,7 @@ timestamp = data.getDateStr()
 if not os.path.exists("data"):
     os.makedirs("data")
 
-cols = ["id", "gender", "age", "trial", "trigger", "audio_name"]
+cols = ["id", "gender", "age", "trial", "trigger", "audio_name", "t_afer_stimulus"]
 
 results = pd.DataFrame(
     columns = cols
@@ -80,6 +80,7 @@ final = visual.TextBox2(
         Thank you for your participation!
 
         Press Q to conclude the experiment
+
         '''
     )
 
@@ -101,8 +102,6 @@ timer = core.Clock()
 fixation_cross()
 win.flip()
 
-PullTriggerDown = False 
-
 for file in fileList:
     if event.getKeys(['escape']):
         results.to_csv(filename,index=False)
@@ -114,22 +113,21 @@ for file in fileList:
         trigger = 21
     trial = fileList.index(file)+1
     audio_name = file
-    win.callOnFlip(setParallelData, trigger) 
-    PullTriggerDown = True 
     stim = sound.Sound(file, volume = 0.5)
+    duration = stim.getDuration()
+    waiting_time = random.uniform(0.9, 1.1)
     fixation_cross()
+    #win.callOnFlip(setParallelData, trigger)
     time1 = timer.getTime()
     win.flip()
     time2 = timer.getTime()
     stim.play()
-    time3 = timer.getTime()
-    print([time1, time2, time3])
-    if PullTriggerDown:
-        win.callOnFlip(setParallelData, 0)
-        PullTriggerDown = False 
-    core.wait(2)
-    stim.pause()
-    core.wait(0.5)
+    if duration < 2:
+        core.wait(duration + waiting_time)
+    else:
+        core.wait(2)
+        print('sound longer than 2sec')
+        stim.pause()
 
     row = pd.Series({
         "id": id, 
@@ -138,6 +136,7 @@ for file in fileList:
         "trial": trial,
         "trigger": trigger,
         "audio_name": audio_name,
+        "t_after_stimulus": waiting_time,
         })
     trialDf = pd.DataFrame(row,index=cols).T
 
@@ -154,6 +153,7 @@ results.to_csv(filename,index=False)
 
 final.draw()
 win.flip()
+event.waitKeys(keyList = ['q', 'escape'])
 
 
 #code we added while thinking it was broke (idk, might be useful if it breaks again):
