@@ -26,7 +26,7 @@ timestamp = data.getDateStr()
 if not os.path.exists("data"):
     os.makedirs("data")
 
-cols = ["id", "gender", "age", "trial", "trigger", "audio_name", "t_afer_stimulus", "time_1", "time_2"]
+cols = ["id", "gender", "age", "trial", "trigger", "audio_name", "t_after_stimulus", "time_1", "time_2"]
 
 results = pd.DataFrame(
     columns = cols
@@ -136,7 +136,7 @@ for file in fileList:
         "trigger": trigger,
         "audio_name": audio_name,
         "t_after_stimulus": waiting_time,
-        "time1": time_1,
+        "time_1": time_1,
         "time_2": time_2,
         })
     trialDf = pd.DataFrame(row,index=cols).T
@@ -156,28 +156,3 @@ results.to_csv(filename,index=False)
 final.draw()
 win.flip()
 event.waitKeys(keyList = ['q', 'escape'])
-
-
-#code we added while thinking it was broke (idk, might be useful if it breaks again):
-    #play_and_trigger(stim = sound.Sound(file, volume = 0.5), trigger = trigger)
-    #win.callOnFlip(play_and_trigger, stim = sound.Sound(file, volume = 0.5), trigger = trigger) 
-    #maybe we can just name them,starting from the trigger - 1_ for human and
-    # 2_ for non-human or maybe 3_, 4_0 and so on for each different group of non-human sounds we decide to use
-    #fixation_cross()
-    #win.flip()
-    #win.callOnFlip(setParallelData, 0)
-    #core.wait(1.2) # short trials for actual data
-    
-    
-    
-    
-#def play_and_trigger(stim, trigger):
-#    setParallelData(0)
-#    time1 = timer.getTime() #just for checking how long it takes
-#    setParallelData(trigger)
-#    time2 = timer.getTime()
-#    stim.play()
-#    time3 = timer.getTime()
-    #setParallelData(0)
-    #times = [time1, time2, time3]
-    #print(times)
