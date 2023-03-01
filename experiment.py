@@ -26,7 +26,7 @@ timestamp = data.getDateStr()
 if not os.path.exists("data"):
     os.makedirs("data")
 
-cols = ["id", "gender", "age", "trial", "trigger", "audio_name", "t_afer_stimulus"]
+cols = ["id", "gender", "age", "trial", "trigger", "audio_name", "t_afer_stimulus", "time_1", "time_2"]
 
 results = pd.DataFrame(
     columns = cols
@@ -118,15 +118,14 @@ for file in fileList:
     waiting_time = random.uniform(0.9, 1.1)
     fixation_cross()
     win.callOnFlip(setParallelData, trigger)
-    time1 = timer.getTime()
     win.flip()
-    time2 = timer.getTime()
+    time_1 = timer.getTime()
     stim.play()
+    time_2 = timer.getTime()
     if duration < 2:
         core.wait(duration + waiting_time)
     else:
-        core.wait(2)
-        print('sound longer than 2sec')
+        core.wait(2 + waiting_time)
         stim.pause()
 
     row = pd.Series({
@@ -137,6 +136,8 @@ for file in fileList:
         "trigger": trigger,
         "audio_name": audio_name,
         "t_after_stimulus": waiting_time,
+        "time1": time_1,
+        "time_2": time_2,
         })
     trialDf = pd.DataFrame(row,index=cols).T
 
